@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05090d">
+<title>KAVALER — Portfolio</title>
+<style>
+:root{
+  --text:#eef7fb;
+  --muted:#93a3a9;
+  --border:rgba(220,240,248,.24);
+  --border-hover:rgba(235,248,255,.58);
+  --glass:rgba(6,13,19,.72);
+  --glass-strong:rgba(5,11,16,.94);
+  --glow:rgba(210,239,250,.22);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:#03070a url("assets/background.jpg") center/cover fixed no-repeat;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:radial-gradient(circle at 50% 30%,rgba(20,40,51,.12),rgba(0,0,0,.72) 82%);
+}
+body:after{
+  content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 50% 45%,rgba(200,235,248,.035),transparent 35%);
+  animation:ambient 8s ease-in-out infinite alternate;
+}
+@keyframes ambient{from{transform:scale(1)}to{transform:scale(1.07)}}
+
+button,a{font:inherit}
+button{color:inherit}
+button:focus-visible,a:focus-visible{outline:1px solid #e7f7fc;outline-offset:3px}
+
+.page{
+  width:min(720px,calc(100% - 26px));
+  min-height:100vh;
+  margin:auto;
+  padding:34px 0;
+}
+.card{
+  position:relative;
+  min-height:calc(100vh - 68px);
+  padding:42px 50px 30px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:28px;
+  background:linear-gradient(145deg,rgba(12,22,29,.78),rgba(3,9,13,.68));
+  box-shadow:0 35px 110px rgba(0,0,0,.62),inset 0 0 70px rgba(210,240,250,.025);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+}
+.card:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.055) 49%,transparent 72%);
+  transform:translateX(-130%);
+}
+body.loaded .card:before{animation:glassSweep 2.1s .2s var(--ease) forwards}
+@keyframes glassSweep{to{transform:translateX(130%)}}
+
+/* Состояние до запуска анимации */
+.hero>*,
+.main-menu .menu-item,
+.bottom-area,
+.socials{opacity:0;visibility:hidden}
+
+body.loaded .avatar{animation:heroDrop .9s .05s var(--ease) forwards}
+body.loaded .name{animation:heroDrop .85s .18s var(--ease) forwards}
+body.loaded .tagline{animation:heroDrop .85s .31s var(--ease) forwards}
+body.loaded .menu-item{animation:menuIn .75s var(--ease) forwards}
+body.loaded .menu-item:nth-child(1){animation-delay:.44s}
+body.loaded .menu-item:nth-child(2){animation-delay:.51s}
+body.loaded .menu-item:nth-child(3){animation-delay:.58s}
+body.loaded .menu-item:nth-child(4){animation-delay:.65s}
+body.loaded .menu-item:nth-child(5){animation-delay:.72s}
+body.loaded .menu-item:nth-child(6){animation-delay:.79s}
+body.loaded .bottom-area{animation:bottomIn .8s 1.02s var(--ease) forwards}
+body.loaded .socials{animation:bottomIn .75s 1.14s var(--ease) forwards}
+
+@keyframes heroDrop{
+  0%{opacity:0;visibility:visible;transform:translateY(-45px) scale(.9);filter:blur(7px)}
+  65%{opacity:1}
+  100%{opacity:1;visibility:visible;transform:none;filter:blur(0)}
+}
+@keyframes menuIn{
+  0%{opacity:0;visibility:visible;transform:translateX(-55px) scale(.97);filter:blur(5px)}
+  70%{opacity:1}
+  100%{opacity:1;visibility:visible;transform:none;filter:blur(0)}
+}
+@keyframes bottomIn{
+  from{opacity:0;visibility:visible;transform:translateY(25px);filter:blur(4px)}
+  to{opacity:1;visibility:visible;transform:none;filter:blur(0)}
+}
+
+.hero{text-align:center;display:flex;align-items:center;flex-direction:column}
+.avatar{
+  width:116px;height:116px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(239,249,253,.9);
+  box-shadow:0 0 25px rgba(220,244,255,.28),0 0 70px rgba(150,210,230,.12);
+}
+.name{
+  margin-top:18px;font-size:38px;font-weight:300;
+  letter-spacing:.38em;padding-left:.38em;
+}
+.tagline{
+  max-width:590px;margin:12px 0 30px;
+  color:#aebdc3;font-size:13px;line-height:1.65;
+}
+
+.main-menu{display:grid;gap:9px}
+.menu-item{
+  position:relative;display:flex;align-items:center;width:100%;
+  padding:15px 18px;border:1px solid var(--border);border-radius:16px;
+  background:rgba(5,13,18,.48);cursor:pointer;text-align:left;
+  overflow:hidden;
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s,background .35s;
+}
+.menu-item:before{
+  content:"";position:absolute;inset:-1px;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(235,249,255,.14),transparent 30%);
+  opacity:0;transition:opacity .35s;
+}
+.menu-item:hover{
+  transform:translateY(-4px) scale(1.008);
+  border-color:var(--border-hover);
+  background:rgba(10,22,29,.67);
+  box-shadow:0 15px 38px rgba(0,0,0,.25),0 0 25px var(--glow);
+}
+.menu-item:hover:before{opacity:1}
+.menu-item:active{transform:scale(.975);transition-duration:.08s}
+.icon,.copy,.arrow{position:relative;z-index:1}
+.icon{
+  width:32px;text-align:center;font-size:24px;color:#cce1e8;
+  transition:transform .4s var(--ease),filter .3s;
+}
+.menu-item:hover .icon{transform:scale(1.12) rotate(-6deg);filter:drop-shadow(0 0 9px rgba(225,247,255,.55))}
+.copy{display:grid;gap:3px}
+.copy strong{font-size:14px;font-weight:400;letter-spacing:.17em}
+.copy span{font-size:11px;color:#7f9097}
+.arrow{
+  margin-left:auto;font-size:27px;color:#b9cbd1;
+  transition:transform .4s var(--ease),color .25s;
+}
+.menu-item:hover .arrow{transform:translateX(8px);color:#fff}
+
+.divider{height:1px;background:var(--border);margin:29px 0 17px}
+.motto{text-align:center;color:#8b9a9f;font-size:12px;margin-bottom:14px}
+.bottom-area{display:flex;justify-content:center}
+.bottom-button{
+  min-width:260px;padding:12px 18px;border:1px solid var(--border);border-radius:13px;
+  background:rgba(6,14,19,.5);cursor:pointer;color:#c5d5da;
+  transition:.35s var(--ease);letter-spacing:.13em;font-size:12px;
+}
+.bottom-button:hover{
+  transform:translateY(-4px);
+  border-color:var(--border-hover);
+  box-shadow:0 0 28px var(--glow);
+  color:#fff;
+}
+.bottom-button:active{transform:scale(.96)}
+
+.socials{display:flex;justify-content:center;gap:27px;margin-top:21px}
+.social{
+  border:0;background:transparent;color:#d5e6eb;cursor:pointer;
+  font-size:21px;padding:4px;transition:.3s var(--ease)
+}
+.social:hover{transform:translateY(-5px) scale(1.14);text-shadow:0 0 17px rgba(225,248,255,.7)}
+.social:active{transform:scale(.9)}
+
+#sparkles{position:fixed;inset:0;z-index:80;pointer-events:none}
+.spark{
+  position:fixed;width:3px;height:3px;border-radius:50%;background:#fff;
+  box-shadow:0 0 10px 2px rgba(255,255,255,.85);
+  animation:sparkOut .7s ease-out forwards;
+}
+@keyframes sparkOut{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}
+}
+
+/* Окна */
+.overlay{
+  position:fixed;inset:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:rgba(0,3,6,.72);
+  backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .38s var(--ease),backdrop-filter .5s;
+}
+.overlay.open{
+  opacity:1;visibility:visible;pointer-events:auto;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.modal{
+  position:relative;width:min(640px,100%);max-height:calc(100vh - 40px);overflow:auto;
+  padding:30px;border:1px solid var(--border-hover);border-radius:24px;
+  background:var(--glass-strong);
+  box-shadow:0 35px 110px rgba(0,0,0,.7),0 0 45px rgba(200,235,248,.08);
+  transform:translateY(32px) scale(.94);opacity:0;filter:blur(5px);
+  transition:transform .55s var(--ease),opacity .4s var(--ease),filter .55s var(--ease);
+}
+.overlay.open .modal{transform:none;opacity:1;filter:blur(0)}
+.close{
+  position:absolute;right:13px;top:9px;border:0;background:none;
+  color:#a9b9bf;font-size:30px;line-height:1;cursor:pointer;
+  transition:.3s var(--ease);z-index:2
+}
+.close:hover{color:#fff;transform:rotate(90deg) scale(1.08)}
+.modal h2{margin:0 42px 8px 0;font-size:21px;font-weight:350;letter-spacing:.12em}
+.modal-sub{margin:0 0 22px;color:#84959b;font-size:12px;line-height:1.6}
+.content{display:grid;gap:10px}
+.info{
+  padding:15px 16px;border:1px solid var(--border);border-radius:14px;
+  background:rgba(255,255,255,.025);color:#d8e5e8;line-height:1.65;font-size:13px
+}
+.info strong{display:block;font-weight:450;margin-bottom:5px;color:#eef7fa}
+.quote{border-left:2px solid rgba(220,242,250,.55);padding:16px;background:rgba(255,255,255,.025);color:#dce9ec;line-height:1.7;font-size:13px}
+.modal-link{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  width:100%;padding:15px 16px;border:1px solid var(--border);border-radius:14px;
+  background:rgba(255,255,255,.025);cursor:pointer;color:#dce9ec;text-decoration:none;
+  transition:.3s var(--ease);
+}
+.modal-link:hover{transform:translateX(4px);border-color:var(--border-hover);box-shadow:0 0 24px var(--glow);background:rgba(255,255,255,.05)}
+.modal-link span:last-child{font-size:21px;transition:.3s var(--ease)}
+.modal-link:hover span:last-child{transform:translateX(6px)}
+.ok,.back{
+  width:100%;padding:12px 15px;margin-top:20px;border:1px solid var(--border);
+  border-radius:12px;background:rgba(220,242,250,.06);cursor:pointer;
+  transition:.3s var(--ease);color:#d9e7eb
+}
+.ok:hover,.back:hover{transform:translateY(-3px);border-color:var(--border-hover);box-shadow:0 0 22px var(--glow);color:#fff}
+.ok:active,.back:active{transform:scale(.97)}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;z-index:100;
+  padding:10px 15px;border:1px solid var(--border);border-radius:99px;
+  background:rgba(5,12,16,.95);color:#dcebef;font-size:12px;
+  opacity:0;transform:translate(-50%,20px);pointer-events:none;transition:.3s var(--ease)
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:620px){
+  body{background-attachment:scroll}
+  .page{width:calc(100% - 12px);padding:9px 0 18px}
+  .card{min-height:calc(100vh - 27px);padding:28px 13px 20px;border-radius:23px}
+  .avatar{width:94px;height:94px}
+  .name{font-size:28px;letter-spacing:.29em;padding-left:.29em}
+  .tagline{font-size:11.5px;margin-bottom:24px}
+  .menu-item{padding:14px 12px}
+  .icon{width:27px;font-size:22px}
+  .copy strong{font-size:12px;letter-spacing:.13em}
+  .copy span{font-size:10px}
+  .arrow{font-size:24px}
+  .modal{padding:26px 18px;border-radius:20px}
+  .modal h2{font-size:18px}
+  .bottom-button{width:100%;min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<canvas id="sparkles"></canvas>
+
+<main class="page">
+<section class="card">
+<header class="hero">
+  <img class="avatar" src="assets/avatar.jpg" alt="KAVALER">
+  <div class="name">KAVALER</div>
+  <div class="tagline">Пока другие выстраивают стены из отговорок, ищущие возводят мосты из опыта — только так и покоряется этот мир</div>
+</header>
+
+<nav class="main-menu">
+  <button class="menu-item" data-view="services">
+    <div class="icon">▣</div><div class="copy"><strong>МОИ УСЛУГИ</strong><span>Что я делаю</span></div><div class="arrow">→</div>
+  </button>
+  <button class="menu-item" data-view="portfolio">
+    <div class="icon">✒</div><div class="copy"><strong>ПОРТФОЛИО</strong><span>Мои работы</span></div><div class="arrow">→</div>
+  </button>
+  <button class="menu-item" data-view="price">
+    <div class="icon">▤</div><div class="copy"><strong>ПРАЙС-ЛИСТ</strong><span>Цены и условия</span></div><div class="arrow">→</div>
+  </button>
+  <button class="menu-item" data-view="about">
+    <div class="icon">▤</div><div class="copy"><strong>ОБО МНЕ</strong><span>Немного информации</span></div><div class="arrow">→</div>
+  </button>
+  <button class="menu-item" data-view="contact">
+    <div class="icon">✉</div><div class="copy"><strong>СВЯЗАТЬСЯ СО МНОЙ</strong><span>Написать мне</span></div><div class="arrow">→</div>
+  </button>
+  <button class="menu-item" data-view="reviews">
+    <div class="icon">★</div><div class="copy"><strong>ОТЗЫВЫ</strong><span>Что говорят клиенты</span></div><div class="arrow">→</div>
+  </button>
+</nav>
+
+<div class="divider"></div>
+<div class="motto">Давайте создадим что-то крутое вместе ✦</div>
+
+<div class="bottom-area">
+  <button class="bottom-button" data-view="team">⌁ &nbsp; МОЯ КОМАНДА</button>
+</div>
+
+<div class="socials">
+  <button class="social" data-social="vk" title="ВКонтакте">ᴠᴋ</button>
+  <button class="social" data-social="telegram" title="Telegram">➤</button>
+  <button class="social" data-social="email" title="Email">✉</button>
+  <button class="social" data-social="github" title="GitHub">◉</button>
+</div>
+</section>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" data-close>×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="overlay" id="confirmOverlay">
+  <div class="modal">
+    <button class="close" data-confirm-close>×</button>
+    <h2 id="confirmTitle">Перейти на внешнюю страницу?</h2>
+    <p class="modal-sub" id="confirmText">Вы покидаете сайт KAVALER.</p>
+    <div class="modal-actions">
+      <button class="ok" data-confirm-no>Нет</button>
+      <button class="ok" data-confirm-yes>Да, перейти</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================
+   РЕДАКТИРОВАНИЕ ССЫЛОК — всё собрано здесь
+   ========================================================== */
+const LINKS = {
+  telegram: "https://t.me/Cockka",
+  email: "mailto:Weironn@mail.ru",
+  vk: "https://vk.ru/ctpahhikk",
+  github: "https://github.com/cockka",
+  portfolio: "https://github.com/cockka/My-works-portfolio",
+  teamTelegram: "https://t.me/+PIpIL_bz5gVjMDk6",
+  referral: "https://pocket-friends.co/r/wxm50vjldj"
+};
+
+/* ==========================================================
+   ТЕКСТЫ ОКОН
+   ========================================================== */
+const CONTENT = {
+services: `
+  <h2>Мои услуги</h2><p class="modal-sub">Что я делаю</p>
+  <div class="content">
+    <div class="info"><strong>Монтаж</strong>Создание и обработка видеоконтента, в том числе мобильный монтаж.</div>
+    <div class="info"><strong>Дизайн</strong>Визуальные решения, оформление и работа с графикой.</div>
+    <div class="info"><strong>Менеджмент</strong>Организация задач, коммуникация и сопровождение проектов.</div>
+    <div class="info"><strong>Простая веб-разработка</strong>Одностраничные сайты, простая вёрстка и интерактивные элементы.</div>
+  </div>
+  <button class="back" data-back>← Назад</button>
+`,
+portfolio: `
+  <h2>Портфолио</h2><p class="modal-sub">Мои работы и проекты</p>
+  <button class="modal-link" data-external="portfolio"><span>My works portfolio</span><span>→</span></button>
+  <button class="back" data-back>← Назад</button>
+`,
+price: `
+  <h2>Прайс-лист</h2><p class="modal-sub">Стоимость работы</p>
+  <div class="info">Я не могу устанавливать фиксированную цену за свои работы, так как каждый заказчик требует работу разного уровня сложности, объёма и времени.<br><br><strong>Стоимость обсуждается индивидуально.</strong></div>
+  <button class="ok" data-back>Ок</button>
+`,
+about: `
+  <h2>Обо мне</h2><p class="modal-sub">Немного информации</p>
+  <div class="quote">«Я лишь стараюсь познать этот мир таким, каким мне предоставилась возможность».</div>
+  <div class="info" style="margin-top:10px">
+    В свои 19 лет я не ищу идеальных условий и не жду подходящего момента, а сам создаю свой путь.<br><br>
+    <strong>Мобильный монтаж:</strong> создаю видеоконтент прямо на смартфоне, находя выразительные решения в условиях ограниченных ресурсов.<br><br>
+    <strong>Веб-разработка и Python:</strong> осваиваю программирование с нуля и создаю свои первые рабочие проекты.<br><br>
+    <strong>Трейдинг:</strong> имею за плечами уже 5 лет практического опыта, преимущественно торгуя на платформах Pocket Option, Bybit и Binance.
+  </div>
+  <button class="back" data-back>← Назад</button>
+`,
+contact: `
+  <h2>Связаться со мной</h2><p class="modal-sub">Основные способы связи</p>
+  <div class="content">
+    <button class="modal-link" data-direct="telegram"><span>Telegram</span><span>→</span></button>
+    <button class="modal-link" data-direct="email"><span>Email</span><span>→</span></button>
+    <button class="modal-link" data-vk><span>ВКонтакте</span><span>→</span></button>
+  </div>
+  <button class="back" data-back>← Назад</button>
+`,
+reviews: `
+  <h2>Отзывы</h2><p class="modal-sub">Раздел пока находится в разработке</p>
+  <div class="info">Данный пункт находится в разработке. Если вам интересно, свяжитесь со мной любым способом, чтобы получить необходимую дополнительную информацию.</div>
+  <div class="content" style="margin-top:10px">
+    <button class="modal-link" data-direct="telegram"><span>Telegram</span><span>→</span></button>
+    <button class="modal-link" data-direct="email"><span>Email</span><span>→</span></button>
+    <button class="modal-link" data-vk><span>ВКонтакте</span><span>→</span></button>
+  </div>
+  <button class="back" data-back>← Назад</button>
+`,
+team: `
+  <h2>Моя команда</h2><p class="modal-sub">Выберите нужный раздел</p>
+  <div class="content">
+    <button class="modal-link" data-external="referral"><span>Реферальная ссылка Pocket Option</span><span>→</span></button>
+    <button class="modal-link" data-external="teamTelegram"><span>Телеграм-канал</span><span>→</span></button>
+  </div>
+  <button class="back" data-back>← Назад</button>
+`,
+};
+
+/* ==========================================================
+   ЛОГИКА
+   ========================================================== */
+const overlay = document.getElementById("overlay");
+const modalContent = document.getElementById("modalContent");
+const confirmOverlay = document.getElementById("confirmOverlay");
+let pendingUrl = "";
+
+window.addEventListener("DOMContentLoaded", () => {
+  // Запускаем стартовую анимацию после полной загрузки DOM.
+  requestAnimationFrame(() => document.body.classList.add("loaded"));
+});
+
+function openView(key){
+  modalContent.innerHTML = CONTENT[key];
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  modalContent.querySelectorAll("[data-back]").forEach(btn => {
+    btn.addEventListener("click", closeView);
+  });
+  modalContent.querySelectorAll("[data-external]").forEach(btn => {
+    btn.addEventListener("click", () => confirmExternal(LINKS[btn.dataset.external]));
+  });
+  modalContent.querySelectorAll("[data-direct]").forEach(btn => {
+    btn.addEventListener("click", () => window.location.href = LINKS[btn.dataset.direct]);
+  });
+  modalContent.querySelectorAll("[data-vk]").forEach(btn => {
+    btn.addEventListener("click", showVkWarning);
+  });
+}
+function closeView(){
+  overlay.classList.remove("open");
+  if(!confirmOverlay.classList.contains("open")) document.body.style.overflow = "";
+}
+
+document.querySelectorAll("[data-view]").forEach(btn => {
+  btn.addEventListener("click", () => openView(btn.dataset.view));
+});
+document.querySelector("[data-close]").addEventListener("click", closeView);
+overlay.addEventListener("click", e => { if(e.target === overlay) closeView(); });
+
+function confirmExternal(url){
+  pendingUrl = url;
+  document.getElementById("confirmTitle").textContent = "Уверены, что хотите перейти?";
+  document.getElementById("confirmText").textContent =
+    "Вы переходите на внешнюю страницу. После подтверждения сайт KAVALER останется в этой вкладке.";
+  confirmOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function showVkWarning(){
+  pendingUrl = LINKS.vk;
+  document.getElementById("confirmTitle").textContent = "Важное предупреждение";
+  document.getElementById("confirmText").textContent =
+    "Учтите, что страница ВКонтакте, используемая мной, является рабочей, а не основной. Если вы уверены, нажмите «Да, перейти».";
+  confirmOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeConfirm(){
+  pendingUrl = "";
+  confirmOverlay.classList.remove("open");
+  if(!overlay.classList.contains("open")) document.body.style.overflow = "";
+}
+document.querySelector("[data-confirm-yes]").addEventListener("click", () => {
+  if(pendingUrl) window.location.href = pendingUrl;
+});
+document.querySelector("[data-confirm-no]").addEventListener("click", closeConfirm);
+document.querySelector("[data-confirm-close]").addEventListener("click", closeConfirm);
+confirmOverlay.addEventListener("click", e => { if(e.target === confirmOverlay) closeConfirm(); });
+
+document.querySelectorAll("[data-social]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const type = btn.dataset.social;
+    if(type === "vk") showVkWarning();
+    else if(type === "github") confirmExternal(LINKS.github);
+    else window.location.href = LINKS[type];
+  });
+});
+
+/* Световой блик следует за курсором внутри кнопок */
+document.querySelectorAll(".menu-item").forEach(btn => {
+  btn.addEventListener("pointermove", e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.setProperty("--mx", ((e.clientX-r.left)/r.width*100)+"%");
+    btn.style.setProperty("--my", ((e.clientY-r.top)/r.height*100)+"%");
+  });
+});
+
+/* Редкие белые искры */
+let lastTrail = 0;
+document.addEventListener("pointermove", e => {
+  if(e.pointerType !== "mouse" || Date.now()-lastTrail < 90) return;
+  lastTrail = Date.now();
+  if(Math.random() > .55) sparkle(e.clientX,e.clientY,1);
+});
+document.addEventListener("pointerdown", e => {
+  if(e.target.closest("button,a")) sparkle(e.clientX,e.clientY,6);
+});
+function sparkle(x,y,count){
+  for(let i=0;i<count;i++){
+    const s=document.createElement("i");
+    s.className="spark";
+    s.style.left=x+"px"; s.style.top=y+"px";
+    s.style.setProperty("--dx",(Math.random()*70-35)+"px");
+    s.style.setProperty("--dy",(Math.random()*70-35)+"px");
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),720);
+  }
+}
+</script>
+</body>
+</html>
